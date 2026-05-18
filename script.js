@@ -1,6 +1,6 @@
 // script.js
 // REPLACE THIS WITH YOUR ACTUAL APPS SCRIPT WEB APP URL
-const API_URL = 'https://script.google.com/macros/s/AKfycbzC6JnYAldqWLv3qDrvyRwV0rTzcDAvI6f0YlWBwHh1VIOl7_f_lMp272psZPZvHnQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbw1lLi1xYD2ORDB5RhdjHuCCn_6xbRB08Wp6EYzg0zFtNTPaO0QflMa4ABktlcmjZM/exec';
 let allContracts = [];
 let amountByProfessionChart, contractsByNationalityChart, amountOverTimeChart;
 
