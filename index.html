@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contracts Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN for beautiful charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>📊 Contracts Performance Dashboard</h1>
+        </header>
+
+        <!-- Filters Panel -->
+        <div class="filters">
+            <div class="filter-group">
+                <label for="professionFilter">Profession:</label>
+                <select id="professionFilter"></select>
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Contract Status:</label>
+                <select id="statusFilter"></select>
+            </div>
+            <div class="filter-group">
+                <label for="nationalityFilter">Nationality:</label>
+                <select id="nationalityFilter"></select>
+            </div>
+            <button id="resetFilters" class="reset-btn">Reset Filters</button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-cards">
+            <div class="card">
+                <h3>Total Contracts</h3>
+                <p id="totalContracts">0</p>
+            </div>
+            <div class="card">
+                <h3>Total Amount Due</h3>
+                <p id="totalAmountDue">0 SAR</p>
+            </div>
+            <div class="card">
+                <h3>Avg Recruitment (Days)</h3>
+                <p id="avgDuration">0</p>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <canvas id="amountByProfessionChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="contractsByNationalityChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="amountOverTimeChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
