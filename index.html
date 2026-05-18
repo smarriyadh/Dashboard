@@ -1,52 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contracts Dashboard</title>
+    <title>لوحة تحكم العقود</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <header>
-            <h1>📊 Contracts Performance Dashboard</h1>
+            <h1>📊 لوحة تحكم العقود</h1>
         </header>
 
-        <!-- Filters Panel -->
+        <!-- لوحة التصفيات -->
         <div class="filters">
             <div class="filter-group">
-                <label for="professionFilter">Profession:</label>
+                <label for="professionFilter">المهنة:</label>
                 <select id="professionFilter"></select>
             </div>
             <div class="filter-group">
-                <label for="statusFilter">Contract Status:</label>
+                <label for="statusFilter">حالة العقد:</label>
                 <select id="statusFilter"></select>
             </div>
             <div class="filter-group">
-                <label for="nationalityFilter">Nationality:</label>
+                <label for="nationalityFilter">الجنسية:</label>
                 <select id="nationalityFilter"></select>
             </div>
-            <button id="resetFilters" class="reset-btn">Reset Filters</button>
+            <button id="resetFilters" class="reset-btn">إعادة تعيين</button>
         </div>
 
-        <!-- KPI Cards -->
+        <!-- بطاقات مؤشرات الأداء -->
         <div class="kpi-cards">
             <div class="card">
-                <h3>Total Contracts</h3>
+                <h3>إجمالي العقود</h3>
                 <p id="totalContracts">0</p>
             </div>
             <div class="card">
-                <h3>Total Amount Due</h3>
-                <p id="totalAmountDue">0 SAR</p>
+                <h3>إجمالي المبلغ المستحق</h3>
+                <p id="totalAmountDue">0 ر.س</p>
             </div>
             <div class="card">
-                <h3>Avg Recruitment (Days)</h3>
+                <h3>متوسط مدة الاستقدام (يوم)</h3>
                 <p id="avgDuration">0</p>
             </div>
         </div>
 
-        <!-- Charts Grid -->
+        <!-- شبكة الرسوم البيانية -->
         <div class="charts-grid">
             <div class="chart-card">
                 <canvas id="amountByProfessionChart"></canvas>
