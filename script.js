@@ -148,17 +148,44 @@ function updateContractsByNationalityChart(contracts) {
 
 function updateAmountOverTimeChart(contracts) {
     const monthlyAmounts = {};
+    
     contracts.forEach(contract => {
-        const startDate = contract['تاريخ بداية العقد'];
-        if (startDate) {
-            const date = new Date(startDate);
-            if (!isNaN(date.getTime())) {
-                const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                const amount = parseFloat(contract['المبلغ المستحق']) || 0;
-                monthlyAmounts[monthKey] = (monthlyAmounts[monthKey] || 0) + amount;
+        let startDate = contract['تاريخ بداية العقد'];
+        if (!startDate) return;
+        
+        let date;
+        // If it's already a Date object (from Apps Script)
+        if (startDate instanceof Date) {
+            date = startDate;
+        } 
+        // If it's a string like "9/15/2025 13:34"
+        else if (typeof startDate === 'string') {
+            // Try to parse MDY with time
+            const parts = startDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+            if (parts) {
+                const month = parseInt(parts[1], 10) - 1; // JS months: 0-11
+                const day = parseInt(parts[2], 10);
+                const year = parseInt(parts[3], 10);
+                const hour = parts[4] ? parseInt(parts[4], 10) : 0;
+                const minute = parts[5] ? parseInt(parts[5], 10) : 0;
+                date = new Date(year, month, day, hour, minute);
+            } else {
+                // Fallback to standard parsing
+                date = new Date(startDate);
             }
+        } 
+        else {
+            // Unknown type, try converting
+            date = new Date(startDate);
+        }
+        
+        if (date && !isNaN(date.getTime())) {
+            const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            const amount = parseFloat(contract['المبلغ المستحق']) || 0;
+            monthlyAmounts[monthKey] = (monthlyAmounts[monthKey] || 0) + amount;
         }
     });
+    
     const sortedMonths = Object.keys(monthlyAmounts).sort();
     const data = sortedMonths.map(month => monthlyAmounts[month]);
     
@@ -170,7 +197,6 @@ function updateAmountOverTimeChart(contracts) {
         options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'المبلغ المستحق عبر الزمن' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'المبلغ (ر.س)' } }, x: { title: { display: true, text: 'الشهر' } } } }
     });
 }
-
 function resetFilters() {
     document.getElementById('professionFilter').value = 'all';
     document.getElementById('statusFilter').value = 'all';
