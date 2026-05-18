@@ -1,7 +1,6 @@
 // script.js
-// REPLACE THIS WITH YOUR ACTUAL APPS SCRIPT WEB APP URL
+// الرجاء استبدال الرابط أدناه برابط التطبيق النصي الخاص بك
 const API_URL = 'https://script.google.com/macros/s/AKfycbwGxRL15DSuWv2mVZaey3L6sYJ3cVkJ_DdA23-S0MKOV3sdrrNWibE1CfIxEjO7O6o/exec';
-
 let allContracts = [];
 let amountByProfessionChart, contractsByNationalityChart, amountOverTimeChart;
 
@@ -24,19 +23,19 @@ function fetchData() {
                 applyFilters();
             } else {
                 console.error('API Error:', result.error);
-                showError('Failed to load data. Please check the console for details.');
+                showError('فشل تحميل البيانات. يرجى مراجعة وحدة التحكم.');
             }
         })
         .catch(error => {
             console.error('Network Error:', error);
-            showError('Network error. Make sure the API URL is correct and the script is deployed.');
+            showError('خطأ في الشبكة. تأكد من صحة رابط API ونشر التطبيق النصي.');
         });
 }
 
 function populateFilters(contracts) {
     const professions = [...new Set(contracts.map(c => c['المهنة']).filter(p => p && p !== ''))].sort();
     const professionSelect = document.getElementById('professionFilter');
-    professionSelect.innerHTML = '<option value="all">All Professions</option>';
+    professionSelect.innerHTML = '<option value="all">جميع المهن</option>';
     professions.forEach(p => {
         const option = document.createElement('option');
         option.value = escapeHtml(p);
@@ -46,7 +45,7 @@ function populateFilters(contracts) {
     
     const statuses = [...new Set(contracts.map(c => c['حالة العقد'] || c['الحالة']).filter(s => s && s !== ''))].sort();
     const statusSelect = document.getElementById('statusFilter');
-    statusSelect.innerHTML = '<option value="all">All Statuses</option>';
+    statusSelect.innerHTML = '<option value="all">جميع الحالات</option>';
     statuses.forEach(s => {
         const option = document.createElement('option');
         option.value = escapeHtml(s);
@@ -56,7 +55,7 @@ function populateFilters(contracts) {
     
     const nationalities = [...new Set(contracts.map(c => c['الجنسية']).filter(n => n && n !== ''))].sort();
     const nationalitySelect = document.getElementById('nationalityFilter');
-    nationalitySelect.innerHTML = '<option value="all">All Nationalities</option>';
+    nationalitySelect.innerHTML = '<option value="all">جميع الجنسيات</option>';
     nationalities.forEach(n => {
         const option = document.createElement('option');
         option.value = escapeHtml(n);
@@ -89,7 +88,7 @@ function updateKPIs(contracts) {
         const amount = parseFloat(contract['المبلغ المستحق']) || 0;
         return sum + amount;
     }, 0);
-    document.getElementById('totalAmountDue').textContent = totalAmount.toLocaleString() + ' SAR';
+    document.getElementById('totalAmountDue').textContent = totalAmount.toLocaleString() + ' ر.س';
     
     const avgDuration = contracts.reduce((sum, contract) => {
         const duration = parseFloat(contract['مدة الاستقدام']) || 0;
@@ -123,8 +122,8 @@ function updateAmountByProfessionChart(contracts) {
     const ctx = document.getElementById('amountByProfessionChart').getContext('2d');
     amountByProfessionChart = new Chart(ctx, {
         type: 'bar',
-        data: { labels, datasets: [{ label: 'Total Amount Due (SAR)', data, backgroundColor: 'rgba(102, 126, 234, 0.7)', borderColor: 'rgba(102, 126, 234, 1)', borderWidth: 1, borderRadius: 8 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Top 10 Professions by Total Amount Due' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Amount (SAR)' } }, x: { title: { display: true, text: 'Profession' } } } }
+        data: { labels, datasets: [{ label: 'إجمالي المبلغ المستحق (ر.س)', data, backgroundColor: 'rgba(102, 126, 234, 0.7)', borderColor: 'rgba(102, 126, 234, 1)', borderWidth: 1, borderRadius: 8 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'أعلى 10 مهن من حيث المبلغ المستحق' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'المبلغ (ر.س)' } }, x: { title: { display: true, text: 'المهنة' } } } }
     });
 }
 
@@ -143,7 +142,7 @@ function updateContractsByNationalityChart(contracts) {
     contractsByNationalityChart = new Chart(ctx, {
         type: 'pie',
         data: { labels, datasets: [{ data, backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#fa709a', '#fee140'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right' }, title: { display: true, text: 'Contracts by Nationality' } } }
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right' }, title: { display: true, text: 'العقود حسب الجنسية' } } }
     });
 }
 
@@ -167,8 +166,8 @@ function updateAmountOverTimeChart(contracts) {
     const ctx = document.getElementById('amountOverTimeChart').getContext('2d');
     amountOverTimeChart = new Chart(ctx, {
         type: 'line',
-        data: { labels: sortedMonths, datasets: [{ label: 'Total Amount Due by Month', data, borderColor: '#764ba2', backgroundColor: 'rgba(118, 75, 162, 0.1)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#667eea', pointBorderColor: '#fff', pointRadius: 5, pointHoverRadius: 7 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Amount Due Over Time' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Amount (SAR)' } }, x: { title: { display: true, text: 'Month' } } } }
+        data: { labels: sortedMonths, datasets: [{ label: 'إجمالي المبلغ المستحق شهرياً', data, borderColor: '#764ba2', backgroundColor: 'rgba(118, 75, 162, 0.1)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#667eea', pointBorderColor: '#fff', pointRadius: 5, pointHoverRadius: 7 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'المبلغ المستحق عبر الزمن' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'المبلغ (ر.س)' } }, x: { title: { display: true, text: 'الشهر' } } } }
     });
 }
 
@@ -180,15 +179,15 @@ function resetFilters() {
 }
 
 function showLoading() {
-    document.getElementById('totalContracts').textContent = 'Loading...';
-    document.getElementById('totalAmountDue').textContent = 'Loading...';
-    document.getElementById('avgDuration').textContent = 'Loading...';
+    document.getElementById('totalContracts').textContent = 'جاري التحميل...';
+    document.getElementById('totalAmountDue').textContent = 'جاري التحميل...';
+    document.getElementById('avgDuration').textContent = 'جاري التحميل...';
 }
 
 function showError(message) {
-    document.getElementById('totalContracts').textContent = 'Error';
-    document.getElementById('totalAmountDue').textContent = 'Error';
-    document.getElementById('avgDuration').textContent = 'Error';
+    document.getElementById('totalContracts').textContent = 'خطأ';
+    document.getElementById('totalAmountDue').textContent = 'خطأ';
+    document.getElementById('avgDuration').textContent = 'خطأ';
     console.error(message);
 }
 
